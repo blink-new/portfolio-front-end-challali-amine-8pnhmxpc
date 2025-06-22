@@ -5,11 +5,11 @@ import { Button } from './components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Textarea } from './components/ui/textarea';
-import { MobileNavigation } from './components/MobileNavigation';
-import { TechnologyCarousel } from './components/TechnologyCarousel';
-import { ProjectCard } from './components/ProjectCard';
-import { ProjectModal } from './components/ProjectModal';
-import { academicProjects, personalProjects, allProjects, type Project } from './data/projects';
+import { MobileNavigation } from "./components/MobileNavigation";
+import { TechnologyCarousel } from "./components/TechnologyCarousel";
+import { ProjectCard } from "./components/ProjectCard";
+import { ProjectModal } from "./components/ProjectModal";
+import { academicProjects, personalProjects, Project } from "./data/projects";
 
 function App() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -39,11 +39,8 @@ function App() {
   };
 
   const handleViewProject = (project: Project) => {
-    const fullProject = allProjects.find(p => p.id === project.id);
-    if (fullProject) {
-      setSelectedProject(fullProject);
-      setIsModalOpen(true);
-    }
+    setSelectedProject(project);
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
@@ -128,22 +125,22 @@ function App() {
               </Button>
             </div>
           </motion.div>
+          
+          {/* Animated Arrow */}
+          <motion.button
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 p-2 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            onClick={() => scrollToSection('about')}
+          >
+            <ChevronDown className="h-6 w-6 text-muted-foreground" />
+          </motion.button>
         </div>
-        
-        {/* Animated Arrow */}
-        <motion.button
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 p-2 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          onClick={() => scrollToSection('about')}
-        >
-          <ChevronDown className="h-6 w-6 text-muted-foreground" />
-        </motion.button>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20">
-        <div className="max-w-4xl mx-auto px-4">
+      <section id="about" className="min-h-screen flex items-center py-20">
+        <div className="max-w-4xl mx-auto px-4 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -153,7 +150,12 @@ function App() {
               À propos de <span className="gradient-text">moi</span>
             </h2>
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
                 <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                   Passionné par le développement web depuis plusieurs années, je me spécialise dans la création 
                   d'interfaces utilisateur modernes et performantes. Mon parcours m'a permis d'acquérir une 
@@ -163,28 +165,43 @@ function App() {
                   J'aime relever des défis techniques et créer des expériences utilisateur exceptionnelles 
                   qui répondent aux besoins réels des utilisateurs.
                 </p>
-              </div>
-              <div className="glass-effect p-6 rounded-lg">
+              </motion.div>
+              <motion.div 
+                className="glass-effect p-6 rounded-lg border border-red-500/20"
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <h3 className="text-xl font-semibold mb-4 text-primary">Formation</h3>
                 <p className="text-muted-foreground">
                   <strong>BAC+2 en Développement Web côté Front End</strong><br />
                   Spécialisé dans les technologies modernes du web
                 </p>
-              </div>
+                <motion.div
+                  className="mt-4 h-1 bg-gradient-to-r from-red-500 to-red-600 rounded-full"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "100%" }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6, duration: 1 }}
+                />
+              </motion.div>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Technologies Section */}
-      <section id="technologies" className="py-20 bg-muted/30">
-        <div className="max-w-6xl mx-auto px-4">
+      <section id="technologies" className="py-20 bg-muted/30 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-transparent to-red-600/5" />
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
               Technologies <span className="gradient-text">Maîtrisées</span>
             </h2>
             <div className="space-y-8">
